@@ -2,6 +2,7 @@ import pygame as py
 
 #INICIALIZAR AS CONFIGURAÇOES PADRAO
 py.init()
+clock = py.time.Clock()
 
 CORES = {"branco":(255,255,255),
          "amarelo":(255,255,0),
@@ -18,6 +19,7 @@ tela.fill(CORES["rosa"])
 carroo = py.image.load("imagem/carroo.png")
 carroo = py.transform.scale(carroo,(100,80))
 carroo_x = 0 
+carroo_y = 0
 
 #LOOP INFINITO para manter o jogo rodando
 fim_jogo = False
@@ -30,11 +32,21 @@ while not fim_jogo:
 
     #DESENHAR OS OBJETOS
     tela.fill(CORES["rosa"])
-    tela.blit(carroo,(carroo_x,260))
-    carroo_x += 1
+    tela.blit(carroo,(carroo_x,carroo_y))
+
+    teclas = py.key.get_pressed()
+    if teclas[py.K_RIGHT]:
+        carroo_x += 10
+    if teclas[py.K_LEFT]:
+        carroo_x -= 10
+    if teclas[py.K_UP]:
+        carroo_y -= 10
+    if teclas[py.K_DOWN]:
+        carroo_y += 10
 
     #ATUALIZAR A PAGINA
     py.display.update()
+    clock.tick(60)
 
 
 
