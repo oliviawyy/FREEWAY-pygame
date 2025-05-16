@@ -8,5 +8,4 @@ class Jogador:
         self.pos_x = x_inicial
         self.pos_y = y_inicial
 
-    def andar(self):
-        
+    
