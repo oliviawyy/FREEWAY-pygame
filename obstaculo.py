@@ -13,7 +13,7 @@ class Obstaculo:
         self.imagem = py.transform.scale(self.imagem,(self.largura,self.altura))
 
         #guardando a posição inicial e final
-        faixas = [100,200,300,400,500]
+        self.faixas = [100,200,300,400,500]
         self.x_inicial = 1280
         #self.y_inicial = 220
         self.posicao_x = self.x_inicial
