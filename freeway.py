@@ -1,5 +1,6 @@
 import pygame as py
 from jogador import Jogador
+from obstaculo import Obstaculo
 
 print("""          
                       
@@ -15,118 +16,82 @@ print("""
 """)
 
 
-
-
-
-#INICIALIZAR AS CONFIGURAÇOES PADRAO
+#inicializar as configurações padrão
 py.init()
 clock = py.time.Clock()
 
-CORES = {"branco":(255,255,255),
-         "amarelo":(255,255,0),
-         "rosa":(255,200,255),
-         "cinza":(100,100,100),
-         "verde":(0,255,0)}
+CORES = {"BRANCO":(255,255,255),
+         "AMARELO":(255,255,0),
+         "ROSA": (255,200,255),
+         "CINZA":(100,100,100)}
 
-#CRIAR A TELA
-py.display.set_mode((1280,720))
+#criar a tela
+
 tela = py.display.set_mode((1280,720))
-tela.fill(CORES["rosa"])
-
-#CRIAR OS OBJETOS
-estrada = py.image.load("imagem/estrada.png")
-estrada = py.transform.scale(estrada,( 1280, 720))
-
-#jujuba
-
-carroo = Jogador("imagem/carroo.png",100,80,590,620)
-carroo = py.image.load("imagem/carroo.png")
-carroo = py.transform.scale(carroo,(100,80))
-carroo_x = 590
-carroo_y = 620
-
-#LOOP INFINITO para manter o jogo rodando
-fim_jogo = False
-while not fim_jogo:
-    #TRATAR DE EVENTOS
-    for evento in py.event.get():
-        if evento.type == py.QUIT:
-            fim_jogo = True
+tela.fill(CORES["CINZA"])
 
 
-    #DESENHAR OS OBJETOS
-    tela.fill(CORES["rosa"])
-    tela.blit(estrada, (0,0))
-    tela.blit(carroo,(carroo_x,carroo_y))
+# Criandoa aqui os personagens, definindo altura largura, e o local que eeles estaram
+carroo = Jogador("imagem\carroo.png",100,100,360,500)
+jujuba4 = Jogador("imagem\jujuba1.png", 100, 100, 0,0)
 
+
+estrada = py.image.load("imagem\estrada.png")
+estrada = py.transform.scale(estrada,(1280,720))
+
+obstaculo1 = Obstaculo("imagem\carro1.png",130, 100)
+obstaculo2 = Obstaculo("imagem/carro-2.png", 130, 100)
+
+#loop infinito 
+fimjogo  = False
+while not fimjogo:
+    #ttratar de eventos
+    for eventos in py.event.get():    
+        if eventos.type == py.QUIT:
+            fimjogo = True
+
+        
+    #desenhar os objetos
+    tela.blit (estrada,(0,0))
+
+    obstaculo1.movimentar()
+    tela.blit(obstaculo1.imagem,(obstaculo1.posicao_x, obstaculo1.posicao_y))
+
+    obstaculo2.movimentar()
+    tela.blit(obstaculo2.imagem,(obstaculo2.posicao_x,obstaculo2.posicao_y))
+    
+    tela.blit(carroo.imagem, (carroo.posicao_x, carroo.posicao_y))
+    tela.blit(jujuba4.imagem, (jujuba4.posicao_x, jujuba4.posicao_y))
+
+
+    #desenhar outros objetos TESTE
 
     teclas = py.key.get_pressed()
-    if teclas[py.K_RIGHT]:
-        carroo_x -= 5
-    if teclas[py.K_UP]:
-        carroo_y -= 5
-    if teclas[py.K_DOWN]:
-        carroo_y += 5
 
-
-    #LIMITAR MOVIMENTOS
-
-    if (carroo_x <= 1280 and carroo_y >= 640): # BAIXO
-        carroo_y -= 5
-
-    if (carroo_y <= 0): # Cima
-        carroo_y += 5
-
-    if (carroo_y >= 0) and carroo_x <= 0: #esquerrda
-        personagem_x += 5
-
-    if (carroo_y <= 720) and carroo_x >= 1200: #esquerrda
-        carroo_x -= 5
+    carroo.movimentar(py.K_w, 
+                      py.K_s, 
+                      py.K_d, 
+                      py.K_a)
     
-    #ATUALIZAR A PAGINA
+    jujuba4.movimentar(py.K_UP, py.K_DOWN, py.K_RIGHT, py.K_LEFT)
+
+
+    #colisão da tela
+
+    #PARAR NAS BARREIRAS
+    if carroo.posicao_x <= 0:
+        carroo.posicao_x = 0
+    
+    if carroo.posicao_y <= 0:
+        carroo.posicao_y = 0
+
+    if carroo.posicao_x >= 1280:
+        carroo.posicao_x = 1280
+
+    if carroo.posicao_y >= 720:
+        carroo.posicao_y = 720
+
+    #atualizar a pagina
     py.display.update()
     clock.tick(60)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
