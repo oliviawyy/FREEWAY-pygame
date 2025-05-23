@@ -11,9 +11,10 @@ class Obstaculo:
         #carregando e alterando o tamanho da imagem
         self.imagem = py.image.load(end_imagem)
         self.imagem = py.transform.scale(self.imagem,(self.largura,self.altura))
+        self.mascara = py.mask.from_surface(self.imagem)
 
         #guardando a posição inicial e final
-        self.faixas = [100,200,300,400,500]
+        self.faixas = [140,220,310,410,520]
         self.x_inicial = 1280
         #self.y_inicial = 220
         self.posicao_x = self.x_inicial
@@ -21,7 +22,6 @@ class Obstaculo:
 
     #controlando a velocidade do obstaculo
         self.velocidade = random.randint(5,25)
-
 
 
     def movimentar(self):
