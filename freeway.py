@@ -32,15 +32,17 @@ tela.fill(CORES["CINZA"])
 
 
 # Criandoa aqui os personagens, definindo altura largura, e o local que eeles estaram
-carroo = Jogador("imagem\carroo.png",100,100,360,500)
-jujuba4 = Jogador("imagem\jujuba1.png", 100, 100, 0,0)
+carroo = Jogador("imagem\carroo.png",100,100,420,610,"imagem/atropelo.mp3")
+jujuba4 = Jogador("imagem\jujuba1.png", 100, 100, 500,610, "imagem/atropelo.mp3")
 
 
 estrada = py.image.load("imagem\estrada.png")
 estrada = py.transform.scale(estrada,(1280,720))
 
-obstaculo1 = Obstaculo("imagem\carro1.png",130, 100)
-obstaculo2 = Obstaculo("imagem/carro-2.png", 130, 100)
+
+lista_obstaculo = [Obstaculo("imagem\carro1.png",130, 100),
+                  Obstaculo("imagem/carro-2.png", 130, 100),
+                  Obstaculo("imagem\carro-3.png", 140, 100)]
 
 #loop infinito 
 fimjogo  = False
@@ -54,16 +56,29 @@ while not fimjogo:
     #desenhar os objetos
     tela.blit (estrada,(0,0))
 
-    obstaculo1.movimentar()
-    tela.blit(obstaculo1.imagem,(obstaculo1.posicao_x, obstaculo1.posicao_y))
+    for obstaculo in lista_obstaculo:
+        obstaculo.movimentar()
+        #jake
+        tela.blit(obstaculo.imagem,(obstaculo.posicao_x, obstaculo.posicao_y))
+        if carroo.mascara.overlap(obstaculo.mascara,(obstaculo.posicao_x-carroo.posicao_x,obstaculo.posicao_y-carroo.posicao_y)):
+            carroo.posicao_x = carroo.x_inicial
+            carroo.posicao_y = carroo.y_inicial
+            carroo.som.play()
+            carroo.pontos -= 1
+            print(carroo.pontos)
+            print("O CARRO TE ATROPELOU!")
+        #finn
+        if jujuba4.mascara.overlap(obstaculo.mascara,(obstaculo.posicao_x-jujuba4.posicao_x,obstaculo.posicao_y-jujuba4.posicao_y)):
+            jujuba4.posicao_x = jujuba4.x_inicial
+            jujuba4.posicao_y = jujuba4.y_inicial
+            jujuba4.som.play()
+            jujuba4.pontos -= 1
+            print(jujuba4.pontos)
 
-    obstaculo2.movimentar()
-    tela.blit(obstaculo2.imagem,(obstaculo2.posicao_x,obstaculo2.posicao_y))
-    
     tela.blit(carroo.imagem, (carroo.posicao_x, carroo.posicao_y))
     tela.blit(jujuba4.imagem, (jujuba4.posicao_x, jujuba4.posicao_y))
 
-
+    
     #desenhar outros objetos TESTE
 
     teclas = py.key.get_pressed()
@@ -72,7 +87,13 @@ while not fimjogo:
                       py.K_s, 
                       py.K_d, 
                       py.K_a)
-    
+    if carroo.posicao_y <= 10:
+        carroo.pontos +=1
+        carroo.posicao_x = carroo.x_inicial
+        carroo.posicao_y = carroo.y_inicial
+        print(carroo.pontos)
+
+
     jujuba4.movimentar(py.K_UP, py.K_DOWN, py.K_RIGHT, py.K_LEFT)
 
 
